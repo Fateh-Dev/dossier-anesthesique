@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using Server.Net.Models;
+using Server.Net;
 
 namespace Server.Net.Data;
 
@@ -10,8 +10,9 @@ public static class DbSeeder
         //Seed Roles
         var userManager = service.GetService<UserManager<ApplicationUser>>();
         var roleManager = service.GetService<RoleManager<IdentityRole>>();
-        
-        if (roleManager == null || userManager == null) return;
+
+        if (roleManager == null || userManager == null)
+            return;
 
         await roleManager.CreateAsync(new IdentityRole("Admin"));
         await roleManager.CreateAsync(new IdentityRole("User"));

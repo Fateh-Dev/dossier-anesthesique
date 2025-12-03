@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Server.Net.Data;
-using Server.Net.Models;
+using Server.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
