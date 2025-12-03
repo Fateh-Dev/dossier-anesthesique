@@ -49,105 +49,249 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // ========================================
+        // DMSI (Dossier Medical) Entities
+        // ========================================
+
+        modelBuilder.Entity<DMSI_Dossiers_Medicaux>(entity =>
+        {
+            entity.HasQueryFilter(m => m.IsDeleted == false);
+
+            // Indexes for performance
+            entity.HasIndex(e => e.PatientId);
+            entity.HasIndex(e => e.MedecinId);
+            entity.HasIndex(e => e.DateAdmission);
+        });
+
         modelBuilder.Entity<DMSI_Antecedents>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
+
             entity
                 .HasOne(e => e.Dossier)
                 .WithMany(s => s.Antecedents)
                 .HasForeignKey(e => e.DMSI_Dossiers_MedicauxId)
                 .OnDelete(DeleteBehavior.Cascade);
-            ;
+
+            entity.HasIndex(e => e.DMSI_Dossiers_MedicauxId);
         });
-        modelBuilder.Entity<DMSI_Dossiers_Medicaux>(entity =>
-        {
-            entity.HasQueryFilter(m => m.IsDeleted == false);
-        });
+
         modelBuilder.Entity<DMSI_Evolutions>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
+
             entity
                 .HasOne(e => e.Dossier)
                 .WithMany(s => s.Evolutions)
                 .HasForeignKey(e => e.DMSI_Dossiers_MedicauxId)
                 .OnDelete(DeleteBehavior.Cascade);
-            ;
+
+            entity.HasIndex(e => e.DMSI_Dossiers_MedicauxId);
         });
+
         modelBuilder.Entity<DMSI_Conduite>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
+
             // Configure one-to-one relationship
             entity
                 .HasOne(e => e.Dossier)
                 .WithOne(s => s.DMSI_Conduite)
                 .HasForeignKey<DMSI_Conduite>(e => e.IdDossier)
-                .OnDelete(DeleteBehavior.Cascade); // Foreign key in DMSI_Conduite
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => e.IdDossier);
         });
+
         modelBuilder.Entity<DMSI_Examins_Cliniques>(entity =>
         {
-            //    entity.HasOne(e => e.Dossier)
-            //                               .WithMany()
-            //                               .HasForeignKey(e => e.Dossier);
+            // Note: Doesn't inherit from FullAuditedEntity - no soft delete
+            entity
+                .HasOne(e => e.Dossier)
+                .WithOne(s => s.Examins_Cliniques)
+                .HasForeignKey<DMSI_Examins_Cliniques>(e => e.DossierId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => e.DossierId);
         });
-        modelBuilder.Entity<DMSI_Metrics_Admission>(entity => { });
-        modelBuilder.Entity<DMSI_Examins_Complementaires>(entity => { });
-        modelBuilder.Entity<DMSI_Traitements_Encours>(entity => { });
+
+        modelBuilder.Entity<DMSI_Metrics_Admission>(entity =>
+        {
+            // Note: Doesn't inherit from FullAuditedEntity - no soft delete
+            entity
+                .HasOne(e => e.Dossier)
+                .WithOne(s => s.A_Admission)
+                .HasForeignKey<DMSI_Metrics_Admission>(e => e.DossierId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => e.DossierId);
+        });
+
+        modelBuilder.Entity<DMSI_Examins_Complementaires>(entity =>
+        {
+            // Note: Doesn't inherit from FullAuditedEntity - no soft delete
+            entity
+                .HasOne(e => e.Dossier)
+                .WithOne(s => s.Examins_Complementaires)
+                .HasForeignKey<DMSI_Examins_Complementaires>(e => e.DossierId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => e.DossierId);
+        });
+
+        modelBuilder.Entity<DMSI_Traitements_Encours>(entity =>
+        {
+            // Note: Doesn't inherit from FullAuditedEntity - no soft delete
+            entity
+                .HasOne(e => e.Dossier)
+                .WithMany(s => s.Traitements)
+                .HasForeignKey(e => e.DossierId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => e.DossierId);
+        });
+
+        // ========================================
+        // Core Domain Entities
+        // ========================================
+
+        modelBuilder.Entity<Patient>(entity =>
+        {
+            entity.HasQueryFilter(m => m.IsDeleted == false);
+
+            // Unique index on Matricule
+            entity.HasIndex(e => e.Matricule).IsUnique();
+        });
 
         modelBuilder.Entity<Medecin>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
         });
-        modelBuilder.Entity<Patient>(entity =>
-        {
-            entity.HasQueryFilter(m => m.IsDeleted == false);
-        });
-        modelBuilder.Entity<Intervention>(entity =>
-        {
-            entity.HasQueryFilter(m => m.IsDeleted == false);
-        });
+
         modelBuilder.Entity<Consultation>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
+
+            // Indexes for foreign keys and queries
+            entity.HasIndex(e => e.PatientId);
+            entity.HasIndex(e => e.MedecinId);
+            entity.HasIndex(e => e.DateConsultation);
         });
+
+        modelBuilder.Entity<Intervention>(entity =>
+        {
+            entity.HasQueryFilter(m => m.IsDeleted == false);
+
+            // Indexes for foreign keys and dashboard queries
+            entity.HasIndex(e => e.ConsultationId);
+            entity.HasIndex(e => e.Date);
+            entity.HasIndex(e => new { e.Date, e.Status }); // Composite index
+        });
+
         modelBuilder.Entity<AntecedentChirurgical>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
         });
+
         modelBuilder.Entity<AntecedentMedical>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
         });
+
         modelBuilder.Entity<ExaminClinique>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
         });
-        modelBuilder.Entity<ActeurIntervenant>(entity =>
-        {
-            entity.HasQueryFilter(m => m.IsDeleted == false);
-        });
+
         modelBuilder.Entity<ConsigneAnesthesique>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
         });
+
+        // ========================================
+        // Intervention Related Entities
+        // ========================================
+
+        modelBuilder.Entity<ActeurIntervenant>(entity =>
+        {
+            entity.HasQueryFilter(m => m.IsDeleted == false);
+        });
+
         modelBuilder.Entity<BilanInOut>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
         });
+
         modelBuilder.Entity<PostOperation>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
         });
+
         modelBuilder.Entity<ProblemePreOperatoire>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
         });
+
         modelBuilder.Entity<ResumeOperation>(entity =>
         {
             entity.HasQueryFilter(m => m.IsDeleted == false);
         });
+
+        modelBuilder.Entity<DeroulementOperatoire>(entity =>
+        {
+            // Note: Doesn't inherit from FullAuditedEntity - no soft delete
+        });
+
+        modelBuilder.Entity<AgentAnesthesique>(entity =>
+        {
+            // Note: Doesn't inherit from FullAuditedEntity - no soft delete
+        });
+
+        // ========================================
+        // Reference Data / Lookup Entities
+        // ========================================
+
         modelBuilder.Entity<Grade>(entity =>
         {
+            // Note: Doesn't inherit from FullAuditedEntity - no soft delete
             entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        // Note: The following entities don't inherit from FullAuditedEntity
+        // so they don't have an IsDeleted property and can't use soft delete filters
+        modelBuilder.Entity<Agent>(entity =>
+        {
+            // Reference data - no soft delete
+        });
+
+        modelBuilder.Entity<TypeAnesthesie>(entity =>
+        {
+            // Reference data - no soft delete
+        });
+
+        modelBuilder.Entity<Respirateur>(entity =>
+        {
+            // Reference data - no soft delete
+        });
+
+        modelBuilder.Entity<GradeScientifique>(entity =>
+        {
+            // Reference data - no soft delete
+        });
+
+        modelBuilder.Entity<Specialite>(entity =>
+        {
+            // Reference data - no soft delete
+        });
+
+        modelBuilder.Entity<Arme>(entity =>
+        {
+            // Reference data - no soft delete
+        });
+
+        modelBuilder.Entity<ExternalEntity>(entity =>
+        {
+            // Reference data - no soft delete
         });
 
         base.OnModelCreating(modelBuilder);

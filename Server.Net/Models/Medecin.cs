@@ -18,20 +18,44 @@ namespace Server.Net
             this.Sexe = sexe.ToString();
         }
 
+        [Required]
+        [MaxLength(100)]
         public string Nom { get; set; }
+
+        [Required]
+        [MaxLength(100)]
         public string Prenom { get; set; }
 
         //---------------------------New Attributs
+        [MaxLength(100)]
         public string Nationnalite { get; set; }
+
+        [MaxLength(20)]
         public string Sexe { get; set; }
+
+        [MaxLength(200)]
         public string Specialite { get; set; }
+
+        [MaxLength(20)]
         public string NumeroTel { get; set; }
+
+        [MaxLength(20)]
         public string NumeroTel2 { get; set; }
+
+        [MaxLength(100)]
         public string GradeActuel { get; set; }
+
+        [MaxLength(200)]
         public string GradeScientifique { get; set; }
+
+        [MaxLength(20)]
         public string Matricule { get; set; } // Rempli Obligatoirement
+
         public DateTime? DateNaissance { get; set; }
+
+        [MaxLength(1000)]
         public string Observation { get; set; }
+
         public string MetaData { get; set; } // Phrase comporte comme un log de tt les enregistrement
         public byte[] Image { get; set; } // Photo de profile
         public byte[] Thumbnail { get; set; } // Photo de Profile compressée

@@ -9,7 +9,11 @@ namespace Server.Net
         public ActeurIntervenant() { }
 
         public Guid Id { get; set; }
+
+        [Required]
         public Guid MedecinId { get; set; }
+
+        [Required]
         public Guid InterventionId { get; set; }
     }
 }

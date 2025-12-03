@@ -1,30 +1,68 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Server.Net
 {
     public class DMSI_Conduite : FullAuditedEntity
     {
+        [Required]
         public Guid IdDossier { get; set; }
+
         public DMSI_Dossiers_Medicaux? Dossier { get; set; }
 
         // Plan Respiratoire
+        [MaxLength(200)]
         public string ModeVentilatoire { get; set; }
+
+        [MaxLength(100)]
         public string SiVsDebitO2 { get; set; }
+
+        [MaxLength(100)]
         public string SiCpapDebitO2 { get; set; }
+
+        [MaxLength(100)]
         public string SiBipapFiO2 { get; set; }
+
+        [MaxLength(100)]
         public string SiBipapPep { get; set; }
+
+        [MaxLength(100)]
         public string SiBipapAi { get; set; }
+
+        [MaxLength(100)]
         public string SiBipapTrigger { get; set; }
+
+        [MaxLength(100)]
         public string SiBipapPente { get; set; }
+
+        [MaxLength(100)]
         public string SiBipapTriggerExp { get; set; }
+
+        [MaxLength(100)]
         public string SiBipapTiMax { get; set; }
+
+        [MaxLength(100)]
         public string SiVaciFr { get; set; }
+
+        [MaxLength(100)]
         public string SiVaciVt { get; set; }
+
+        [MaxLength(100)]
         public string SiVaciIe { get; set; }
+
+        [MaxLength(100)]
         public string SiVaciFio2 { get; set; }
+
+        [MaxLength(100)]
         public string SiVaciPep { get; set; }
+
+        [MaxLength(100)]
         public string DebitInsp { get; set; }
+
+        [MaxLength(500)]
         public string PlanRespAutre { get; set; }
+
+        [MaxLength(100)]
         public string PauseTeleinsp { get; set; }
 
         // Plan Cardiovasculaire

@@ -1,11 +1,16 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Server.Net
 {
     public class DMSI_Evolutions : FullAuditedEntity
     {
+        [Required]
         public Guid DMSI_Dossiers_MedicauxId { get; set; }
+
+        [Required]
         public DateTime Date { get; set; }
+
         public Guid? Medecin_1Id { get; set; }
         public Guid? Medecin_2Id { get; set; }
         public string Avis { get; set; }
