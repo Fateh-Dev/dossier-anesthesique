@@ -1,0 +1,96 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Server.Net.Models.DMSI
+{
+    public class DMSI_Conduite : FullAuditedEntity
+    {
+        [Required]
+        public Guid IdDossier { get; set; }
+
+        public DMSI_Dossiers_Medicaux? Dossier { get; set; }
+
+        // Plan Respiratoire
+        [MaxLength(200)]
+        public string ModeVentilatoire { get; set; }
+
+        [MaxLength(100)]
+        public string SiVsDebitO2 { get; set; }
+
+        [MaxLength(100)]
+        public string SiCpapDebitO2 { get; set; }
+
+        [MaxLength(100)]
+        public string SiBipapFiO2 { get; set; }
+
+        [MaxLength(100)]
+        public string SiBipapPep { get; set; }
+
+        [MaxLength(100)]
+        public string SiBipapAi { get; set; }
+
+        [MaxLength(100)]
+        public string SiBipapTrigger { get; set; }
+
+        [MaxLength(100)]
+        public string SiBipapPente { get; set; }
+
+        [MaxLength(100)]
+        public string SiBipapTriggerExp { get; set; }
+
+        [MaxLength(100)]
+        public string SiBipapTiMax { get; set; }
+
+        [MaxLength(100)]
+        public string SiVaciFr { get; set; }
+
+        [MaxLength(100)]
+        public string SiVaciVt { get; set; }
+
+        [MaxLength(100)]
+        public string SiVaciIe { get; set; }
+
+        [MaxLength(100)]
+        public string SiVaciFio2 { get; set; }
+
+        [MaxLength(100)]
+        public string SiVaciPep { get; set; }
+
+        [MaxLength(100)]
+        public string DebitInsp { get; set; }
+
+        [MaxLength(500)]
+        public string PlanRespAutre { get; set; }
+
+        [MaxLength(100)]
+        public string PauseTeleinsp { get; set; }
+
+        // Plan Cardiovasculaire
+        public string Pa { get; set; }
+        public string Fc { get; set; }
+        public string Ic { get; set; }
+        public string Ves { get; set; }
+        public string Rvs { get; set; }
+        public string Nad { get; set; }
+        public string Ad { get; set; }
+        public string Dobutamine { get; set; }
+        public string PlanCardioAutre { get; set; }
+        public string Echocardio { get; set; }
+
+        // Plan Rénal
+        public string Diurese { get; set; }
+        public string ClearanceCreat { get; set; }
+        public string Remplissage { get; set; }
+        public string OptimisationHd { get; set; }
+        public string Diuretique { get; set; }
+        public string DialCritere { get; set; }
+        public string HeuresDialyse { get; set; }
+
+        // Autre Traitements
+        public string Atb { get; set; }
+        public string Atc { get; set; }
+        public string Sedation { get; set; }
+        public string Nutrition { get; set; }
+        public string AutreTrait { get; set; }
+    }
+}

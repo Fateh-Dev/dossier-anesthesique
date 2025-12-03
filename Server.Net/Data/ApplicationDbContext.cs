@@ -1,6 +1,13 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Server.Net;
+using Server.Net.Models.Anesthesia;
+using Server.Net.Models.Antecedents;
+using Server.Net.Models.DMSI;
+using Server.Net.Models.Entities;
+using Server.Net.Models.Operations;
+using Server.Net.Models.Reference;
+using Server.Net.Models.System;
 
 namespace Server.Net.Data;
 
@@ -30,10 +37,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<GradeScientifique> GradesScientifiques { get; set; }
     public virtual DbSet<Specialite> Specialites { get; set; }
     public virtual DbSet<Arme> Armes { get; set; }
-    public virtual DbSet<AppSetting> AppSettings { get; set; }
-    public virtual DbSet<AppNotification> AppNotifications { get; set; }
-    public virtual DbSet<ExternalEntity> ExternalEntities { get; set; }
-
     // Dossier Medical
     public virtual DbSet<DMSI_Dossiers_Medicaux> DMSI_Dossiers_Medicaux { get; set; }
     public DbSet<DMSI_Metrics_Admission> DMSI_Metrics_Admission { get; set; }

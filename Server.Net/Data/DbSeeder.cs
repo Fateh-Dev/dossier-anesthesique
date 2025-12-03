@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using Server.Net;
+using Server.Net.Models.System;
 
 namespace Server.Net.Data;
 
@@ -18,18 +18,18 @@ public static class DbSeeder
         await roleManager.CreateAsync(new IdentityRole("User"));
 
         // Creating Admin User
-        // var user = new ApplicationUser
-        // {
-        //     UserName = "admin@gmail.com",
-        //     Email = "admin@gmail.com",
-        //     EmailConfirmed = true,
-        //     PhoneNumberConfirmed = true
-        // };
-        // var userInDb = await userManager.FindByEmailAsync(user.Email);
-        // if (userInDb == null)
-        // {
-        //     await userManager.CreateAsync(user, "Admin@123");
-        //     await userManager.AddToRoleAsync(user, "Admin");
-        // }
+        var user = new ApplicationUser
+        {
+            UserName = "admin@gmail.com",
+            Email = "admin@gmail.com",
+            EmailConfirmed = true,
+            PhoneNumberConfirmed = true
+        };
+        var userInDb = await userManager.FindByEmailAsync(user.Email);
+        if (userInDb == null)
+        {
+            await userManager.CreateAsync(user, "Admin@123");
+            await userManager.AddToRoleAsync(user, "Admin");
+        }
     }
 }

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Server.Net.Models.System;
 
-namespace Server.Net
+namespace Server.Net.Models.Enumerations
 {
     public class AppSettingsDto
     {
