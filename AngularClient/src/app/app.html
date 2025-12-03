@@ -1,0 +1,2 @@
+<app-splash-screen *ngIf="!authService.initialized()"></app-splash-screen>
+<router-outlet *ngIf="authService.initialized()"></router-outlet>
