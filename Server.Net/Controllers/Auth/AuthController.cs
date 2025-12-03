@@ -9,7 +9,7 @@ using Server.Net;
 using Server.Net.DTOs;
 using Server.Net.Models.System;
 
-namespace Server.Net.Controllers;
+namespace Server.Net.Controllers.Auth;
 
 [Route("api/[controller]")]
 [ApiController]
