@@ -1,30 +1,35 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AbpCompanyName.AbpProjectName.Controllers;
-using DivisionEcole.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Server.Net.Data;
+using Server.Net.DTOs.DMSI;
+using Server.Net.Models.DMSI;
+using Server.Net.Services;
 
 namespace Server.Net.Controllers.DMSI
 {
-    [Produces("application/json")]
     [Route("api/[controller]")]
-    [Abp.Web.Models.DontWrapResult]
+    [ApiController]
+    [Produces("application/json")]
     [ApiExplorerSettings(GroupName = "Suivi_Dossiers_Reanimation")]
-    public class DMSI_Examins_ComplementairesController : AbpProjectNameControllerBase
+    public class DMSI_Examins_ComplementairesController : ControllerBase
     {
-        private readonly DivisionEcoleDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
         public DMSI_Examins_ComplementairesController(
-            DivisionEcoleDbContext context,
+            ApplicationDbContext context,
             ExternalAuthService externalAuthService,
-            IWebHostEnvironment environment
+            IWebHostEnvironment environment,
+            IMapper mapper
         )
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/DMSI_Metrics_Admission
@@ -80,7 +85,7 @@ namespace Server.Net.Controllers.DMSI
             {
                 dmsiExaminsComplementaires.Id = Guid.NewGuid();
                 _context.DMSI_Examins_Complementaires.Add(
-                    ObjectMapper.Map<DMSI_Examins_Complementaires>(dmsiExaminsComplementaires)
+                    _mapper.Map<DMSI_Examins_Complementaires>(dmsiExaminsComplementaires)
                 );
             }
             else
@@ -95,9 +100,7 @@ namespace Server.Net.Controllers.DMSI
                     _context
                         .Entry(existingDMSI_Examins_Complementaires)
                         .CurrentValues.SetValues(
-                            ObjectMapper.Map<DMSI_Examins_Complementaires>(
-                                dmsiExaminsComplementaires
-                            )
+                            _mapper.Map<DMSI_Examins_Complementaires>(dmsiExaminsComplementaires)
                         );
                 }
                 else

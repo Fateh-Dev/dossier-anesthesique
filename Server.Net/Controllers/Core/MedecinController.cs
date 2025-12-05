@@ -4,26 +4,32 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
-using AbpCompanyName.AbpProjectName.Controllers;
-using DivisionEcole.Services;
 using Microsoft.AspNetCore.Hosting;
-    [ApiExplorerSettings(GroupName = "Suivi_Dossiers_Anesthesiques")]
-    //TODO TO BE REMOVED
-    // [Abp.Authorization.AbpAuthorize()]
-    public class MedecinController : AbpProjectNameControllerBase
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using Server.Net.Data;
+using Server.Net.DTOs.Core;
+using Server.Net.Models.Entities;
+using Server.Net.Services;
+
+namespace Server.Net.Controllers.Core
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class MedecinController : ControllerBase
     {
-        private readonly DivisionEcoleDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ExternalAuthService _ExternalAuthService;
 
         private IWebHostEnvironment Environment { get; set; }
 
         public MedecinController(
-            DivisionEcoleDbContext context,
+            ApplicationDbContext context,
             ExternalAuthService externalAuthService,
             IWebHostEnvironment environment
         )
@@ -242,7 +248,7 @@ using Microsoft.AspNetCore.Hosting;
 
         // Api Pour load une image de profile pour un eleve et compression
         [HttpPost("uploadAvatar/{*id}")]
-        public async Task<ActionResult> UploadAvatar([FromRoute] Guid id, [FromForm] IFormFile file)
+        public async Task<ActionResult> UploadAvatar([FromRoute] Guid id, IFormFile file)
         {
             var personne = await _context.Medecins.Where(e => e.Id == id).FirstOrDefaultAsync();
             if (personne == null)

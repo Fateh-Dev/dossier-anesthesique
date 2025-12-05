@@ -1,17 +1,28 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Server.Net.Data;
+using Server.Net.Models.Enumerations;
+using Server.Net.Models.Reference;
+
+namespace Server.Net.Controllers.Reference
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [Produces("application/json")]
     [ApiExplorerSettings(GroupName = "Suivi_Dossiers_Anesthesiques")]
-    // [Abp.Auditing.DisableAuditing]
-    [Abp.Authorization.AbpAuthorize()]
-    public class ReferenceTablesController : AbpProjectNameControllerBase
+    public class ReferenceTablesController : ControllerBase
     {
-        private readonly DivisionEcoleDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         private IWebHostEnvironment Environment { get; set; }
 
         public ReferenceTablesController(
-            DivisionEcoleDbContext context,
+            ApplicationDbContext context,
             IWebHostEnvironment environment
         )
         {

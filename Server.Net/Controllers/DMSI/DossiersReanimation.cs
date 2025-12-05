@@ -1,47 +1,43 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
-using AbpCompanyName.AbpProjectName.Controllers;
-using DivisionEcole.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using OfficeOpenXml;
+using Server.Net.Data;
+using Server.Net.DTOs.Core;
+using Server.Net.DTOs.DMSI;
+using Server.Net.Models.DMSI;
+using Server.Net.Services;
 
 namespace Server.Net.Controllers.DMSI
 {
+    [Route("api/[controller]")]
+    [ApiController]
     [Produces("application/json")]
-    [Route("api/DossiersReanimation")]
     [ApiExplorerSettings(GroupName = "Suivi_Dossiers_Reanimation")]
-    //TODO TO BE REMOVED
-    // [Abp.Authorization.AbpAuthorize()]
-    public partial class DossierReanimationController : AbpProjectNameControllerBase
+    public partial class DossierReanimationController : ControllerBase
     {
-        private readonly DivisionEcoleDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ExternalAuthService _ExternalAuthService;
+        private readonly IMapper _mapper;
 
         private IWebHostEnvironment Environment { get; set; }
 
         public DossierReanimationController(
-            DivisionEcoleDbContext context,
+            ApplicationDbContext context,
             ExternalAuthService externalAuthService,
-            IWebHostEnvironment environment
+            IWebHostEnvironment environment,
+            IMapper mapper
         )
         {
             _context = context;
             _ExternalAuthService = externalAuthService;
             Environment = environment;
+            _mapper = mapper;
         }
 
         [HttpPost("Get_All_Dossiers_Filter")]
@@ -70,7 +66,7 @@ namespace Server.Net.Controllers.DMSI
             [FromBody] DMSI_Dossiers_MedicauxDto item
         )
         {
-            var el = ObjectMapper.Map<DMSI_Dossiers_Medicaux>(item);
+            var el = _mapper.Map<DMSI_Dossiers_Medicaux>(item);
             el.Id = Guid.NewGuid();
             // TODO Check If Exists In DataBase
             _context.DMSI_Dossiers_Medicaux.Add(el);

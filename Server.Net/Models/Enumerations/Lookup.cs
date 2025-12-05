@@ -43,5 +43,6 @@ namespace Server.Net.Models.Enumerations
         public List<ModalData> _TypeAnesthesie { get; set; }
         public List<ModalData> _Respirateurs { get; set; }
         public List<ModalData> _Grades { get; set; }
+        public List<Default> _Defaults { get; set; }
     }
 }

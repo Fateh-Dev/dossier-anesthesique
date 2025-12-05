@@ -2,26 +2,45 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
-    //TODO TO BE REMOVED
-    // [Abp.Authorization.AbpAuthorize()]
-    public class InterventionController : AbpProjectNameControllerBase
+using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using Server.Net.Data;
+using Server.Net.DTOs.Core;
+using Server.Net.DTOs.Operations;
+using Server.Net.Models.Anesthesia;
+using Server.Net.Models.Entities;
+using Server.Net.Models.Enumerations;
+using Server.Net.Models.Operations;
+using Server.Net.Services;
+
+namespace Server.Net.Controllers.Core
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class InterventionController : ControllerBase
     {
-        private readonly DivisionEcoleDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ExternalAuthService _ExternalAuthService;
+        private readonly IMapper _mapper;
+
         private IWebHostEnvironment Environment { get; set; }
 
         public InterventionController(
-            DivisionEcoleDbContext context,
+            ApplicationDbContext context,
             ExternalAuthService externalAuthService,
-            IWebHostEnvironment environment
+            IWebHostEnvironment environment,
+            IMapper mapper
         )
         {
             _context = context;
             _ExternalAuthService = externalAuthService;
             Environment = environment;
+            _mapper = mapper;
         }
 
         [HttpPost("Get_All_Interventions_Filter")]
@@ -171,7 +190,7 @@ using Abp.Application.Services.Dto;
 
             var Patient = _context.Patients.FirstOrDefault(e => e.Id == Consultation.PatientId);
             var AnteMed = _context
-                .AntedecentsMedicaux.Where(e => e.PatientId == Patient.Id)
+                .AntecedentsMedicaux.Where(e => e.PatientId == Patient.Id)
                 .ToList();
             var AnteChir = _context
                 .AntecedentsChirurgicaux.Where(e => e.PatientId == Patient.Id)
@@ -342,7 +361,7 @@ using Abp.Application.Services.Dto;
             [FromBody] PostOperationCreateDto item
         )
         {
-            PostOperation post = ObjectMapper.Map<PostOperation>(item);
+            PostOperation post = _mapper.Map<PostOperation>(item);
             var inter = _context.Interventions.FirstOrDefault(e => e.Id == post.InterventionId);
             var postOper = _context
                 .PostsOperation.Where(e => e.InterventionId == item.InterventionId)
@@ -367,7 +386,7 @@ using Abp.Application.Services.Dto;
             inter.Status = StatusIntervention.Resume_Anesthesique;
             if (resume != null)
                 _context.ResumeOperation.RemoveRange(resume);
-            ResumeOperation post = ObjectMapper.Map<ResumeOperation>(item);
+            ResumeOperation post = _mapper.Map<ResumeOperation>(item);
             _context.ResumeOperation.Add(post);
             await _context.SaveChangesAsync();
             return Ok();
@@ -393,7 +412,7 @@ using Abp.Application.Services.Dto;
             if (ag != null)
                 _context.AgentsAnesthesiques.RemoveRange(ag);
             _context.AgentsAnesthesiques.AddRange(item.AgentsAnesthesiques);
-            DeroulementOperatoire post = ObjectMapper.Map<DeroulementOperatoire>(item);
+            DeroulementOperatoire post = _mapper.Map<DeroulementOperatoire>(item);
             _context.DeroulementsOperatoire.Add(post);
             await _context.SaveChangesAsync();
             return Ok();

@@ -1,26 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AbpCompanyName.AbpProjectName.Controllers;
-using DivisionEcole;
-using DivisionEcole.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Server.Net.Data;
+using Server.Net.DTOs.DMSI;
+using Server.Net.Models.DMSI;
 
 namespace Server.Net.Controllers.DMSI;
 
-[Produces("application/json")]
 [Route("api/[controller]")]
-[Abp.Web.Models.DontWrapResult]
+[ApiController]
+[Produces("application/json")]
 [ApiExplorerSettings(GroupName = "Suivi_Dossiers_Reanimation")]
-public class EvolutionsController : AbpProjectNameControllerBase
+public class EvolutionsController : ControllerBase
 {
-    private readonly DivisionEcoleDbContext _context;
+    private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
-    public EvolutionsController(DivisionEcoleDbContext context)
+    public EvolutionsController(ApplicationDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     // ✅ GET: api/Evolutions (Récupérer toutes les évolutions)
@@ -58,7 +60,7 @@ public class EvolutionsController : AbpProjectNameControllerBase
         [FromBody] DMSI_EvolutionsCreateOrUpdateDto evolution
     )
     {
-        var ev = ObjectMapper.Map<DMSI_Evolutions>(evolution);
+        var ev = _mapper.Map<DMSI_Evolutions>(evolution);
         evolution.Id = Guid.NewGuid(); // Générer un nouvel ID
         _context.DMSI_Evolutions.Add(ev);
         await _context.SaveChangesAsync();

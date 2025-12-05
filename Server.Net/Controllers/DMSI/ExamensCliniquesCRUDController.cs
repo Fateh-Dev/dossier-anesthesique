@@ -1,26 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AbpCompanyName.AbpProjectName.Controllers;
-using DivisionEcole;
-using DivisionEcole.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Server.Net.Data;
+using Server.Net.DTOs.DMSI;
+using Server.Net.Models.DMSI;
 
 namespace Server.Net.Controllers.DMSI;
 
-[Produces("application/json")]
 [Route("api/[controller]")]
-[Abp.Web.Models.DontWrapResult]
+[ApiController]
+[Produces("application/json")]
 [ApiExplorerSettings(GroupName = "Suivi_Dossiers_Reanimation")]
-public class ExamensCliniquesController : AbpProjectNameControllerBase
+public class ExamensCliniquesController : ControllerBase
 {
-    private readonly DivisionEcoleDbContext _context;
+    private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
-    public ExamensCliniquesController(DivisionEcoleDbContext context)
+    public ExamensCliniquesController(ApplicationDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     // ✅ GET: api/ExamensCliniques (Récupérer tous les examens)
@@ -57,7 +59,7 @@ public class ExamensCliniquesController : AbpProjectNameControllerBase
         if (examen.Id == null || examen.Id == Guid.Empty)
         {
             examen.Id = Guid.NewGuid();
-            _context.DMSI_Examins_Cliniques.Add(ObjectMapper.Map<DMSI_Examins_Cliniques>(examen));
+            _context.DMSI_Examins_Cliniques.Add(_mapper.Map<DMSI_Examins_Cliniques>(examen));
         }
         else
         {
@@ -69,7 +71,7 @@ public class ExamensCliniquesController : AbpProjectNameControllerBase
             {
                 _context
                     .Entry(existingDMSI_Examins)
-                    .CurrentValues.SetValues(ObjectMapper.Map<DMSI_Examins_Cliniques>(examen));
+                    .CurrentValues.SetValues(_mapper.Map<DMSI_Examins_Cliniques>(examen));
             }
             else
             {

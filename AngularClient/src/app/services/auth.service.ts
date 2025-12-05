@@ -17,14 +17,14 @@ export interface AuthResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
-  private apiUrl = 'http://localhost:5022/api/auth'; // Adjust port if needed
-  
+  private apiUrl = 'http://localhost:5050/api/auth'; // Adjust port if needed
+
   // Signal to track user state
   currentUser = signal<AuthResponse | null>(null);
   initialized = signal(false);
@@ -44,7 +44,7 @@ export class AuthService {
 
   login(credentials: LoginDto): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(response => {
+      tap((response) => {
         this.saveToken(response);
       })
     );
@@ -90,7 +90,7 @@ export class AuthService {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const expiry = payload.exp;
-      return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+      return Math.floor(new Date().getTime() / 1000) >= expiry;
     } catch {
       return true;
     }

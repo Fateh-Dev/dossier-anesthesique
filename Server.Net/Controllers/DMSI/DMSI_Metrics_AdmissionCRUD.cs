@@ -1,39 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Abp.Application.Services.Dto;
-using AbpCompanyName.AbpProjectName.Controllers;
-using DivisionEcole.Services;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using OfficeOpenXml;
+using Server.Net.Data;
+using Server.Net.Models.DMSI;
+using Server.Net.Services;
 
 namespace Server.Net.Controllers.DMSI
 {
-    [Produces("application/json")]
     [Route("api/[controller]")]
-    [Abp.Web.Models.DontWrapResult]
+    [ApiController]
+    [Produces("application/json")]
     [ApiExplorerSettings(GroupName = "Suivi_Dossiers_Reanimation")]
-    public class DMSI_Metrics_AdmissionController : AbpProjectNameControllerBase
+    public class DMSI_Metrics_AdmissionController : ControllerBase
     {
-        private readonly DivisionEcoleDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ExternalAuthService _ExternalAuthService;
 
         private IWebHostEnvironment Environment { get; set; }
 
         public DMSI_Metrics_AdmissionController(
-            DivisionEcoleDbContext context,
+            ApplicationDbContext context,
             ExternalAuthService externalAuthService,
             IWebHostEnvironment environment
         )

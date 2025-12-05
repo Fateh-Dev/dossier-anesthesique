@@ -4,33 +4,47 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
-using AbpCompanyName.AbpProjectName.Controllers;
-using DivisionEcole.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
-    [ApiExplorerSettings(GroupName = "Suivi_Dossiers_Anesthesiques")]
-    //TODO TO BE REMOVED
-    // [Abp.Authorization.AbpAuthorize()]
-    public class PatientController : AbpProjectNameControllerBase
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using Server.Net.Data;
+using Server.Net.DTOs.Core;
+using Server.Net.Models.Anesthesia;
+using Server.Net.Models.Antecedents;
+using Server.Net.Models.Entities;
+using Server.Net.Models.Enumerations;
+using Server.Net.Models.Operations;
+using Server.Net.Services;
+
+namespace Server.Net.Controllers.Core
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PatientController : ControllerBase
     {
-        private readonly DivisionEcoleDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ExternalAuthService _ExternalAuthService;
+        private readonly IMapper _mapper;
 
         private IWebHostEnvironment Environment { get; set; }
 
         public PatientController(
-            DivisionEcoleDbContext context,
+            ApplicationDbContext context,
             ExternalAuthService externalAuthService,
-            IWebHostEnvironment environment
+            IWebHostEnvironment environment,
+            IMapper mapper
         )
         {
             _context = context;
             _ExternalAuthService = externalAuthService;
             Environment = environment;
+            _mapper = mapper;
         }
 
         [HttpPost("Get_All_Patient_Filter")]
@@ -112,11 +126,11 @@ using Microsoft.AspNetCore.Hosting;
                 .AntecedentsChirurgicaux.Where(p => p.PatientId == patient.Id)
                 .ToList();
             var antMToRemove = _context
-                .AntedecentsMedicaux.Where(p => p.PatientId == patient.Id)
+                .AntecedentsMedicaux.Where(p => p.PatientId == patient.Id)
                 .ToList();
 
             _context.AntecedentsChirurgicaux.RemoveRange(antCToRemove);
-            _context.AntedecentsMedicaux.RemoveRange(antMToRemove);
+            _context.AntecedentsMedicaux.RemoveRange(antMToRemove);
 
             foreach (var it in item.AntecedentsChirurgicaux)
             {
@@ -131,7 +145,7 @@ using Microsoft.AspNetCore.Hosting;
             }
             foreach (var it in item.AntecedentsMedicaux.Where(r => r.Description != null))
             {
-                _context.AntedecentsMedicaux.Add(
+                _context.AntecedentsMedicaux.Add(
                     new AntecedentMedical()
                     {
                         Id = Guid.NewGuid(),
@@ -165,7 +179,7 @@ using Microsoft.AspNetCore.Hosting;
                 .FirstOrDefaultAsync();
             if (patient == null)
                 return NotFound();
-            return Ok(ObjectMapper.Map<PatientReturnDto>(patient));
+            return Ok(_mapper.Map<PatientReturnDto>(patient));
         }
 
         [HttpGet("Recover_Patient")]
@@ -389,7 +403,7 @@ using Microsoft.AspNetCore.Hosting;
 
         // Api Pour load une image de profile pour un eleve et compression
         [HttpPost("uploadAvatar/{*id}")]
-        public async Task<ActionResult> UploadAvatar([FromRoute] Guid id, [FromForm] IFormFile file)
+        public async Task<ActionResult> UploadAvatar([FromRoute] Guid id, IFormFile file)
         {
             var personne = await _context.Patients.Where(e => e.Id == id).FirstOrDefaultAsync();
             if (personne == null)

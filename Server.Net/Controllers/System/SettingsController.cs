@@ -2,36 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AbpCompanyName.AbpProjectName;
-using AbpCompanyName.AbpProjectName.Configuration;
-using AbpCompanyName.AbpProjectName.Controllers;
-using DivisionEcole.Services;
-    // [Abp.Auditing.DisableAuditing]
-    // TODO Add Auth
-    // [Abp.Authorization.AbpAuthorize()]
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Server.Net.Data;
+using Server.Net.Models.Enumerations;
+using Server.Net.Models.System;
+using Server.Net.Services;
 
-    public class AppSettingsController : AbpProjectNameControllerBase
+namespace Server.Net.Controllers.System
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [Produces("application/json")]
+    [ApiExplorerSettings(GroupName = "Suivi_Dossiers_Anesthesiques", IgnoreApi = false)]
+    public class AppSettingsController : ControllerBase
     {
-        private DivisionEcoleDbContext _context;
-        private readonly FakeDbContext _fakecontext;
+        private ApplicationDbContext _context;
         private readonly IConfigurationRoot _configuration;
         private readonly IServiceProvider _serviceProvider;
 
         private IWebHostEnvironment Environment { get; set; }
 
         public AppSettingsController(
-            DivisionEcoleDbContext s2icontext,
-            FakeDbContext fakecontext,
+            ApplicationDbContext s2icontext,
             UserDivisionEcoleClaimsService _service,
             IWebHostEnvironment environment,
             IServiceProvider serviceProvider
         )
         {
             _context = s2icontext;
-            _fakecontext = fakecontext;
+            // _fakecontext = fakecontext;
             Environment = environment;
             _serviceProvider = serviceProvider;
-            _configuration = Environment.GetAppConfiguration();
+            // _configuration = Environment.GetAppConfiguration();
         }
 
         [HttpGet("Get_Params_By_App")]

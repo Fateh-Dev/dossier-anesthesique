@@ -37,6 +37,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<GradeScientifique> GradesScientifiques { get; set; }
     public virtual DbSet<Specialite> Specialites { get; set; }
     public virtual DbSet<Arme> Armes { get; set; }
+    public virtual DbSet<AppSetting> AppSettings { get; set; }
+    public virtual DbSet<ExternalEntity> ExternalEntities { get; set; }
+    public virtual DbSet<Default> Defaults { get; set; }
+
     // Dossier Medical
     public virtual DbSet<DMSI_Dossiers_Medicaux> DMSI_Dossiers_Medicaux { get; set; }
     public DbSet<DMSI_Metrics_Admission> DMSI_Metrics_Admission { get; set; }
