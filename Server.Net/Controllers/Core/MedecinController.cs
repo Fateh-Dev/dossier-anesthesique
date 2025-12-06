@@ -130,9 +130,25 @@ namespace Server.Net.Controllers.Core
         [HttpPost("Create_Medecin")]
         public async Task<ActionResult<string>> Create_Medecin([FromBody] Medecin item)
         {
-            Medecin medecin = new Medecin();
-            medecin = item;
-            // TODO Check If Exists In DataBase
+            if (item == null) return BadRequest("Invalid data");
+
+            Medecin medecin = item;
+            if (medecin.Id == Guid.Empty)
+            {
+                medecin.Id = Guid.NewGuid();
+            }
+            
+            // Fix logic dependent on properties
+            if (!string.IsNullOrEmpty(medecin.Matricule) && medecin.Matricule.Length >= 8) {
+               try { medecin.fixSexeFromMatricule(); } catch {}
+            }
+
+            // Check duplicate matricule
+            var exists = await _context.Medecins.AnyAsync(m => m.Matricule == medecin.Matricule && !m.IsDeleted);
+            if (exists) {
+                return BadRequest($"Un médecin avec le matricule {medecin.Matricule} existe déjà.");
+            }
+
             _context.Medecins.Add(medecin);
             await _context.SaveChangesAsync();
 
@@ -142,10 +158,27 @@ namespace Server.Net.Controllers.Core
         [HttpPut("Update_Medecin")]
         public async Task<ActionResult<string>> Update_Medecin([FromBody] Medecin item)
         {
-            Medecin medecin = new Medecin();
-            medecin = item;
-            // TODO Check If Exists In DataBase
-            _context.Entry(medecin).State = EntityState.Modified;
+            if (item == null || item.Id == Guid.Empty) return BadRequest("Invalid ID");
+
+            var existing = await _context.Medecins.FirstOrDefaultAsync(m => m.Id == item.Id);
+            if (existing == null) return NotFound("Médecin non trouvé");
+
+            // Update allowed fields
+            existing.Nom = item.Nom;
+            existing.Prenom = item.Prenom;
+            existing.Matricule = item.Matricule;
+            existing.Specialite = item.Specialite;
+            existing.GradeScientifique = item.GradeScientifique;
+            existing.NumeroTel = item.NumeroTel;
+            existing.Sexe = item.Sexe;
+            existing.Nationnalite = item.Nationnalite; // update if exists in frontend
+            existing.GradeActuel = item.GradeActuel;
+
+            // Preserve image if not provided
+            if (item.Image != null && item.Image.Length > 0) existing.Image = item.Image;
+            if (item.Thumbnail != null && item.Thumbnail.Length > 0) existing.Thumbnail = item.Thumbnail;
+            
+            _context.Entry(existing).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return Ok("Success");

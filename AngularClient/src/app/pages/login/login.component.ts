@@ -19,7 +19,7 @@ import { CommonModule } from '@angular/common';
               />
             </svg>
           </div>
-          <h1 class="app-title">Dossier Anesthésique</h1>
+          <h1 class="app-title">Anestia</h1>
           <p class="app-subtitle">Système de Gestion des Dossiers Médicaux</p>
 
           <div class="features-list">

@@ -19,7 +19,7 @@ import { ThemeService } from '../services/theme.service';
               />
             </svg>
           </div>
-          <span class="logo-text" *ngIf="sidebarOpen()">Anesthésie</span>
+          <span class="logo-text" *ngIf="sidebarOpen()">Anestia</span>
         </div>
 
         <nav class="sidebar-nav">
@@ -189,7 +189,7 @@ import { ThemeService } from '../services/theme.service';
                 />
               </svg>
             </button>
-            <h1 class="page-title">Dossier Anesthésique</h1>
+            <h1 class="page-title">Anestia</h1>
           </div>
           <div class="header-right">
             <button class="theme-btn" (click)="themeService.toggleTheme()">
