@@ -262,6 +262,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         {
             // Note: Doesn't inherit from FullAuditedEntity - no soft delete
             entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.ToTable("Grades");
         });
 
         // Note: The following entities don't inherit from FullAuditedEntity
@@ -269,31 +270,37 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<Agent>(entity =>
         {
             // Reference data - no soft delete
+            entity.ToTable("Agents");
         });
 
         modelBuilder.Entity<TypeAnesthesie>(entity =>
         {
             // Reference data - no soft delete
+            entity.ToTable("TypesAnesthesies");
         });
 
         modelBuilder.Entity<Respirateur>(entity =>
         {
             // Reference data - no soft delete
+            entity.ToTable("Respirateurs");
         });
 
         modelBuilder.Entity<GradeScientifique>(entity =>
         {
             // Reference data - no soft delete
+            entity.ToTable("GradesScientifiques");
         });
 
         modelBuilder.Entity<Specialite>(entity =>
         {
             // Reference data - no soft delete
+            entity.ToTable("Specialites");
         });
 
         modelBuilder.Entity<Arme>(entity =>
         {
             // Reference data - no soft delete
+            entity.ToTable("Armes");
         });
 
         modelBuilder.Entity<ExternalEntity>(entity =>

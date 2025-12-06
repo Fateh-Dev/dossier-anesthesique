@@ -30,74 +30,395 @@ namespace Server.Net.Controllers.Reference
             Environment = environment;
         }
 
-        [HttpPost("addReferences")]
-        public async Task<ActionResult<string>> Create_Entity([FromBody] RefEntity item)
-        {
-            var max = 0;
-            switch (item.Description)
-            {
-                case "Spécialités":
-                {
-                    if (_context.Specialites.Any())
-                        max = _context.Specialites.Max(e => e.Order);
-                    Specialite el = new Specialite(item.Label, item.Label, max + 1);
-                    _context.Specialites.Add(el);
-                    break;
-                }
-                case "Type d'anesthesie":
-                {
-                    if (_context.TypesAnesthesies.Any())
-                        max = _context.TypesAnesthesies.Max(e => e.Order);
-                    TypeAnesthesie el = new TypeAnesthesie(item.Label, item.Label, max + 1);
-                    _context.TypesAnesthesies.Add(el);
-                    break;
-                }
-                case "Grades Scientifiques":
-                {
-                    if (_context.GradesScientifiques.Any())
-                        max = _context.GradesScientifiques.Max(e => e.Order);
-                    GradeScientifique el = new GradeScientifique(item.Label, item.Label, max + 1);
-                    _context.GradesScientifiques.Add(el);
-                    break;
-                }
-                case "Respirateurs":
-                {
-                    if (_context.Respirateurs.Any())
-                        max = _context.Respirateurs.Max(e => e.Order);
-                    Respirateur el = new Respirateur(item.Label, item.Label, max + 1);
-                    _context.Respirateurs.Add(el);
-                    break;
-                }
-                case "Armes":
-                {
-                    if (_context.Armes.Any())
-                        max = _context.Armes.Max(e => e.Order);
-                    Arme el = new Arme(item.Label, item.Label, max + 1);
-                    _context.Armes.Add(el);
-                    break;
-                }
-                case "Agents Anesthésiques":
-                {
-                    if (_context.Agents.Any())
-                        max = _context.Agents.Max(e => e.Order);
-                    Agent el = new Agent(item.Label, item.Label, max + 1);
-                    _context.Agents.Add(el);
-                    break;
-                }
-                case "Grades":
-                {
-                    if (_context.Grades.Any())
-                        max = _context.Grades.Max(e => e.Order);
-                    Grade el = new Grade(item.Label, item.Label, max + 1);
-                    _context.Grades.Add(el);
-                    break;
-                }
-                default:
-                    break;
-            }
+        // ======================= CREATE ENDPOINTS =======================
 
-            _context.SaveChanges();
-            return Ok("Success");
+        [HttpPost("specialites")]
+        public async Task<ActionResult> CreateSpecialite([FromBody] RefEntity item)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(item?.Label))
+                    return BadRequest("Label is required");
+                
+                var max = _context.Specialites.Any() ? _context.Specialites.Max(e => e.Order) : 0;
+                var entity = new Specialite(item.Label, item.Label, max + 1);
+                entity.Description = item.Label; // Required by DB
+                _context.Specialites.Add(entity);
+                await _context.SaveChangesAsync();
+                return Ok(
+                    new
+                    {
+                        entity.Id,
+                        entity.Label,
+                        entity.Abreviation,
+                        entity.Order,
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPost("typesAnesthesies")]
+        public async Task<ActionResult> CreateTypeAnesthesie([FromBody] RefEntity item)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(item?.Label))
+                    return BadRequest("Label is required");
+                var max = _context.TypesAnesthesies.Any() ? _context.TypesAnesthesies.Max(e => e.Order) : 0;
+                var entity = new TypeAnesthesie(item.Label, item.Label, max + 1);
+                entity.Description = item.Label; // Required by DB
+                _context.TypesAnesthesies.Add(entity);
+                await _context.SaveChangesAsync();
+                return Ok(new { entity.Id, entity.Label, entity.Abreviation, entity.Order });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPost("gradesScientifiques")]
+        public async Task<ActionResult> CreateGradeScientifique([FromBody] RefEntity item)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(item?.Label))
+                    return BadRequest("Label is required");
+                var max = _context.GradesScientifiques.Any() ? _context.GradesScientifiques.Max(e => e.Order) : 0;
+                var entity = new GradeScientifique(item.Label, item.Label, max + 1);
+                entity.Description = item.Label; // Required by DB
+                _context.GradesScientifiques.Add(entity);
+                await _context.SaveChangesAsync();
+                return Ok(new { entity.Id, entity.Label, entity.Abreviation, entity.Order });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPost("respirateurs")]
+        public async Task<ActionResult> CreateRespirateur([FromBody] RefEntity item)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(item?.Label))
+                    return BadRequest("Label is required");
+                var max = _context.Respirateurs.Any() ? _context.Respirateurs.Max(e => e.Order) : 0;
+                var entity = new Respirateur(item.Label, item.Label, max + 1);
+                entity.Description = item.Label; // Required by DB
+                _context.Respirateurs.Add(entity);
+                await _context.SaveChangesAsync();
+                return Ok(new { entity.Id, entity.Label, entity.Abreviation, entity.Order });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPost("armes")]
+        public async Task<ActionResult> CreateArme([FromBody] RefEntity item)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(item?.Label))
+                    return BadRequest("Label is required");
+                var max = _context.Armes.Any() ? _context.Armes.Max(e => e.Order) : 0;
+                var entity = new Arme(item.Label, item.Label, max + 1);
+                entity.Description = item.Label; // Required by DB
+                _context.Armes.Add(entity);
+                await _context.SaveChangesAsync();
+                return Ok(new { entity.Id, entity.Label, entity.Abreviation, entity.Order });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPost("agents")]
+        public async Task<ActionResult> CreateAgent([FromBody] RefEntity item)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(item?.Label))
+                    return BadRequest("Label is required");
+                var max = _context.Agents.Any() ? _context.Agents.Max(e => e.Order) : 0;
+                var entity = new Agent(item.Label, item.Label, max + 1);
+                entity.Description = item.Label; // Required by DB
+                _context.Agents.Add(entity);
+                await _context.SaveChangesAsync();
+                return Ok(new { entity.Id, entity.Label, entity.Abreviation, entity.Order });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPost("grades")]
+        public async Task<ActionResult> CreateGrade([FromBody] RefEntity item)
+        {
+            var max = _context.Grades.Any() ? _context.Grades.Max(e => e.Order) : 0;
+            var entity = new Grade(item.Label, item.Label, max + 1);
+            _context.Grades.Add(entity);
+            await _context.SaveChangesAsync();
+            return Ok(
+                new
+                {
+                    entity.Id,
+                    entity.Label,
+                    entity.Abreviation,
+                    entity.Order,
+                }
+            );
+        }
+
+        // ======================= GET ALL ENDPOINTS =======================
+
+        [HttpGet("specialites")]
+        public async Task<ActionResult<List<object>>> GetSpecialites()
+        {
+            var items = await _context
+                .Specialites.OrderBy(o => o.Order)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Label,
+                    e.Abreviation,
+                    e.Order,
+                })
+                .ToListAsync();
+            return Ok(items);
+        }
+
+        [HttpGet("typesAnesthesies")]
+        public async Task<ActionResult<List<object>>> GetTypesAnesthesies()
+        {
+            var items = await _context
+                .TypesAnesthesies.OrderBy(o => o.Order)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Label,
+                    e.Abreviation,
+                    e.Order,
+                })
+                .ToListAsync();
+            return Ok(items);
+        }
+
+        [HttpGet("gradesScientifiques")]
+        public async Task<ActionResult<List<object>>> GetGradesScientifiques()
+        {
+            var items = await _context
+                .GradesScientifiques.OrderBy(o => o.Order)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Label,
+                    e.Abreviation,
+                    e.Order,
+                })
+                .ToListAsync();
+            return Ok(items);
+        }
+
+        [HttpGet("respirateurs")]
+        public async Task<ActionResult<List<object>>> GetRespirateurs()
+        {
+            var items = await _context
+                .Respirateurs.OrderBy(o => o.Order)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Label,
+                    e.Abreviation,
+                    e.Order,
+                })
+                .ToListAsync();
+            return Ok(items);
+        }
+
+        [HttpGet("armes")]
+        public async Task<ActionResult<List<object>>> GetArmes()
+        {
+            var items = await _context
+                .Armes.OrderBy(o => o.Order)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Label,
+                    e.Abreviation,
+                    e.Order,
+                })
+                .ToListAsync();
+            return Ok(items);
+        }
+
+        [HttpGet("agents")]
+        public async Task<ActionResult<List<object>>> GetAgents()
+        {
+            var items = await _context
+                .Agents.OrderBy(o => o.Order)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Label,
+                    e.Abreviation,
+                    e.Order,
+                })
+                .ToListAsync();
+            return Ok(items);
+        }
+
+        [HttpGet("grades")]
+        public async Task<ActionResult<List<object>>> GetGrades()
+        {
+            var items = await _context
+                .Grades.OrderBy(o => o.Order)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Label,
+                    e.Abreviation,
+                    e.Order,
+                })
+                .ToListAsync();
+            return Ok(items);
+        }
+
+        // ======================= UPDATE ENDPOINTS =======================
+
+        [HttpPut("specialites/{id}")]
+        public async Task<ActionResult> UpdateSpecialite(Guid id, [FromBody] RefEntity item)
+        {
+            try
+            {
+                var entity = await _context.Specialites.FindAsync(id);
+                if (entity == null) return NotFound();
+                entity.Label = item.Label;
+                entity.Abreviation = item.Label;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPut("typesAnesthesies/{id}")]
+        public async Task<ActionResult> UpdateTypeAnesthesie(Guid id, [FromBody] RefEntity item)
+        {
+            try
+            {
+                var entity = await _context.TypesAnesthesies.FindAsync(id);
+                if (entity == null) return NotFound();
+                entity.Label = item.Label;
+                entity.Abreviation = item.Label;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPut("gradesScientifiques/{id}")]
+        public async Task<ActionResult> UpdateGradeScientifique(Guid id, [FromBody] RefEntity item)
+        {
+            try
+            {
+                var entity = await _context.GradesScientifiques.FindAsync(id);
+                if (entity == null) return NotFound();
+                entity.Label = item.Label;
+                entity.Abreviation = item.Label;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPut("respirateurs/{id}")]
+        public async Task<ActionResult> UpdateRespirateur(Guid id, [FromBody] RefEntity item)
+        {
+            try
+            {
+                var entity = await _context.Respirateurs.FindAsync(id);
+                if (entity == null) return NotFound();
+                entity.Label = item.Label;
+                entity.Abreviation = item.Label;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPut("armes/{id}")]
+        public async Task<ActionResult> UpdateArme(Guid id, [FromBody] RefEntity item)
+        {
+            try
+            {
+                var entity = await _context.Armes.FindAsync(id);
+                if (entity == null) return NotFound();
+                entity.Label = item.Label;
+                entity.Abreviation = item.Label;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPut("agents/{id}")]
+        public async Task<ActionResult> UpdateAgent(Guid id, [FromBody] RefEntity item)
+        {
+            try
+            {
+                var entity = await _context.Agents.FindAsync(id);
+                if (entity == null) return NotFound();
+                entity.Label = item.Label;
+                entity.Abreviation = item.Label;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpPut("grades/{id}")]
+        public async Task<ActionResult> UpdateGrade(Guid id, [FromBody] RefEntity item)
+        {
+            try
+            {
+                var entity = await _context.Grades.FindAsync(id);
+                if (entity == null) return NotFound();
+                entity.Label = item.Label;
+                entity.Abreviation = item.Label;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
 
         [HttpGet("reOrderSpecialite")]
@@ -347,78 +668,160 @@ namespace Server.Net.Controllers.Reference
         [HttpDelete("DeleteSpecialite")]
         public async Task<ActionResult> DeleteSpecialite(Guid Id)
         {
-            var currentItem = _context.Specialites.FirstOrDefault(o => o.Id == Id);
-            var queue = _context.Specialites.Max(o => o.Order);
-            await this.reOrderSpecialite(currentItem.Order, queue);
-            _context.Remove(currentItem);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                var currentItem = _context.Specialites.FirstOrDefault(o => o.Id == Id);
+                if (currentItem == null) return NotFound();
+                var queue = _context.Specialites.Any() ? _context.Specialites.Max(o => o.Order) : 0;
+                await this.reOrderSpecialite(currentItem.Order, queue);
+                _context.Remove(currentItem);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
 
         [HttpDelete("DeleteTypeAnesthesie")]
         public async Task<ActionResult> DeleteTypeAnesthesie(Guid Id)
         {
-            var currentItem = _context.TypesAnesthesies.FirstOrDefault(o => o.Id == Id);
-            var queue = _context.TypesAnesthesies.Max(o => o.Order);
-            await this.reOrderTypeAnesthesie(currentItem.Order, queue);
-            _context.Remove(currentItem);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                var currentItem = _context.TypesAnesthesies.FirstOrDefault(o => o.Id == Id);
+                if (currentItem == null) return NotFound();
+                var queue = _context.TypesAnesthesies.Any() ? _context.TypesAnesthesies.Max(o => o.Order) : 0;
+                await this.reOrderTypeAnesthesie(currentItem.Order, queue);
+                _context.Remove(currentItem);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
 
         [HttpDelete("DeleteGradeScientifique")]
         public async Task<ActionResult> DeleteGradeScientifique(Guid Id)
         {
-            var currentItem = _context.GradesScientifiques.FirstOrDefault(o => o.Id == Id);
-            var queue = _context.GradesScientifiques.Max(o => o.Order);
-            await this.reOrderGradeScientifique(currentItem.Order, queue);
-            _context.Remove(currentItem);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                var currentItem = _context.GradesScientifiques.FirstOrDefault(o => o.Id == Id);
+                if (currentItem == null) return NotFound();
+                var queue = _context.GradesScientifiques.Any() ? _context.GradesScientifiques.Max(o => o.Order) : 0;
+                await this.reOrderGradeScientifique(currentItem.Order, queue);
+                _context.Remove(currentItem);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
 
         [HttpDelete("DeleteRespirateur")]
         public async Task<ActionResult> DeleteRespirateur(Guid Id)
         {
-            var currentItem = _context.Respirateurs.FirstOrDefault(o => o.Id == Id);
-            var queue = _context.Respirateurs.Max(o => o.Order);
-            await this.reOrderRespirateur(currentItem.Order, queue);
-            _context.Remove(currentItem);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                var currentItem = _context.Respirateurs.FirstOrDefault(o => o.Id == Id);
+                if (currentItem == null) return NotFound();
+                var queue = _context.Respirateurs.Any() ? _context.Respirateurs.Max(o => o.Order) : 0;
+                await this.reOrderRespirateur(currentItem.Order, queue);
+                _context.Remove(currentItem);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
 
         [HttpDelete("DeleteArme")]
         public async Task<ActionResult> DeleteArme(Guid Id)
         {
-            var currentItem = _context.Armes.FirstOrDefault(o => o.Id == Id);
-            var queue = _context.Armes.Max(o => o.Order);
-            await this.reOrderArmes(currentItem.Order, queue);
-            _context.Remove(currentItem);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                var currentItem = _context.Armes.FirstOrDefault(o => o.Id == Id);
+                if (currentItem == null) return NotFound();
+                var queue = _context.Armes.Any() ? _context.Armes.Max(o => o.Order) : 0;
+                await this.reOrderArmes(currentItem.Order, queue);
+                _context.Remove(currentItem);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
 
         [HttpDelete("DeleteAgents")]
         public async Task<ActionResult> DeleteAgents(Guid Id)
         {
-            var currentItem = _context.Agents.FirstOrDefault(o => o.Id == Id);
-            var queue = _context.Agents.Max(o => o.Order);
-            await this.reOrderAgents(currentItem.Order, queue);
-            _context.Remove(currentItem);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                var currentItem = _context.Agents.FirstOrDefault(o => o.Id == Id);
+                if (currentItem == null) return NotFound();
+                var queue = _context.Agents.Any() ? _context.Agents.Max(o => o.Order) : 0;
+                await this.reOrderAgents(currentItem.Order, queue);
+                _context.Remove(currentItem);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
 
         [HttpDelete("DeleteGrade")]
         public async Task<ActionResult> DeleteGrade(Guid Id)
         {
-            var currentItem = _context.Grades.FirstOrDefault(o => o.Id == Id);
-            var queue = _context.Grades.Max(o => o.Order);
-            await this.reOrderGrade(currentItem.Order, queue);
-            _context.Remove(currentItem);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                var currentItem = _context.Grades.FirstOrDefault(o => o.Id == Id);
+                if (currentItem == null) return NotFound();
+                var queue = _context.Grades.Any() ? _context.Grades.Max(o => o.Order) : 0;
+                await this.reOrderGrade(currentItem.Order, queue);
+                _context.Remove(currentItem);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message, inner = ex.InnerException?.Message });
+            }
+        }
+
+        [HttpGet("debug/tables")]
+        public IActionResult GetTables()
+        {
+            try
+            {
+                var tables = new List<string>();
+                using (var command = _context.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;";
+                    _context.Database.OpenConnection();
+                    using (var result = command.ExecuteReader())
+                    {
+                        while (result.Read())
+                        {
+                            tables.Add(result.GetString(0));
+                        }
+                    }
+                }
+                return Ok(tables);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
     }
 }
