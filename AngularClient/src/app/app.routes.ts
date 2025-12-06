@@ -8,6 +8,7 @@ import { DossiersComponent } from './pages/dossiers/dossiers.component';
 import { StatistiquesComponent } from './pages/statistiques/statistiques.component';
 import { ParametresComponent } from './pages/parametres/parametres.component';
 import { ProfilComponent } from './pages/profil/profil.component';
+import { MedecinsComponent } from './pages/medecins/medecins.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -19,6 +20,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: DashboardComponent },
       { path: 'patients', component: PatientsComponent },
+      { path: 'medecins', component: MedecinsComponent },
       { path: 'interventions', component: InterventionsComponent },
       { path: 'dossiers', component: DossiersComponent },
       { path: 'statistiques', component: StatistiquesComponent },
