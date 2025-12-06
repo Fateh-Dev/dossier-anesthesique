@@ -81,7 +81,7 @@ import { CommonModule } from '@angular/common';
       .page-header h1 {
         font-size: 18px;
         font-weight: 600;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .btn-primary {
         display: flex;
@@ -108,15 +108,19 @@ import { CommonModule } from '@angular/common';
       .search-input {
         flex: 1;
         padding: 8px 12px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--input-border);
         border-radius: 6px;
         font-size: 12px;
+        background: var(--input-bg);
+        color: var(--text-color);
       }
       .filter-select {
         padding: 8px 12px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--input-border);
         border-radius: 6px;
         font-size: 12px;
+        background: var(--input-bg);
+        color: var(--text-color);
       }
       .dossiers-grid {
         display: grid;
@@ -124,7 +128,7 @@ import { CommonModule } from '@angular/common';
         gap: 12px;
       }
       .dossier-card {
-        background: white;
+        background: var(--card-bg);
         border-radius: 8px;
         padding: 12px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -154,11 +158,11 @@ import { CommonModule } from '@angular/common';
         display: block;
         font-size: 13px;
         font-weight: 600;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .dossier-id {
         font-size: 11px;
-        color: #64748b;
+        color: var(--text-muted);
       }
       .dossier-status {
         padding: 3px 8px;
@@ -181,7 +185,7 @@ import { CommonModule } from '@angular/common';
         color: #b45309;
       }
       .dossier-details {
-        border-top: 1px solid #f1f5f9;
+        border-top: 1px solid var(--border-color);
         padding-top: 10px;
         margin-bottom: 10px;
       }
@@ -192,15 +196,15 @@ import { CommonModule } from '@angular/common';
       }
       .label {
         font-size: 11px;
-        color: #64748b;
+        color: var(--text-muted);
       }
       .value {
         font-size: 11px;
-        color: #374151;
+        color: var(--text-color);
         font-weight: 500;
       }
       .value.asa {
-        background: #f1f5f9;
+        background: var(--hover-bg);
         padding: 2px 6px;
         border-radius: 4px;
       }
@@ -220,8 +224,8 @@ import { CommonModule } from '@angular/common';
         color: white;
       }
       .btn-action.secondary {
-        background: #f1f5f9;
-        color: #374151;
+        background: var(--hover-bg);
+        color: var(--text-color);
       }
     `,
   ],

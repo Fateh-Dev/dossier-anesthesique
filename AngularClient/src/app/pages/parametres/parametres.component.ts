@@ -172,7 +172,7 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
       .page-header h1 {
         font-size: 18px;
         font-weight: 600;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .tabs {
         display: flex;
@@ -182,13 +182,14 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
       }
       .tabs button {
         padding: 8px 14px;
-        border: 1px solid #e2e8f0;
-        background: white;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
         border-radius: 6px;
         font-size: 12px;
         cursor: pointer;
         white-space: nowrap;
         transition: all 0.15s;
+        color: var(--text-color);
       }
       .tabs button:hover {
         border-color: #0d9488;
@@ -199,7 +200,7 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
         border-color: #0d9488;
       }
       .content-area {
-        background: white;
+        background: var(--card-bg);
         border-radius: 8px;
         padding: 12px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -212,9 +213,11 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
       .search-input {
         flex: 1;
         padding: 8px 12px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--input-border);
         border-radius: 6px;
         font-size: 12px;
+        background: var(--input-bg);
+        color: var(--text-color);
       }
       .btn-primary {
         display: flex;
@@ -239,7 +242,7 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
       .loading {
         padding: 40px;
         text-align: center;
-        color: #64748b;
+        color: var(--text-muted);
       }
       .table-container {
         overflow-x: auto;
@@ -253,19 +256,19 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
         text-align: left;
         font-size: 11px;
         font-weight: 600;
-        color: #64748b;
-        background: #f8fafc;
-        border-bottom: 1px solid #e2e8f0;
+        color: var(--text-muted);
+        background: var(--header-bg);
+        border-bottom: 1px solid var(--border-color);
       }
       td {
         padding: 10px 12px;
         font-size: 12px;
-        color: #374151;
-        border-bottom: 1px solid #f1f5f9;
+        color: var(--text-color);
+        border-bottom: 1px solid var(--table-border);
       }
       td.empty {
         text-align: center;
-        color: #94a3b8;
+        color: var(--text-muted);
         padding: 30px;
       }
       .actions {
@@ -275,7 +278,7 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
       .btn-icon {
         padding: 6px;
         border: none;
-        background: #f1f5f9;
+        background: transparent;
         border-radius: 4px;
         cursor: pointer;
         transition: all 0.15s;
@@ -283,7 +286,7 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
       .btn-icon svg {
         width: 14px;
         height: 14px;
-        color: #64748b;
+        color: var(--text-muted);
       }
       .btn-icon.edit:hover {
         background: #dbeafe;
@@ -309,23 +312,24 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
         z-index: 100;
       }
       .modal {
-        background: white;
+        background: var(--card-bg);
         border-radius: 8px;
         width: 90%;
         max-width: 400px;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        color: var(--text-color);
       }
       .modal-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 12px 16px;
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid var(--border-color);
       }
       .modal-header h3 {
         font-size: 14px;
         font-weight: 600;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .close-btn {
         padding: 4px;
@@ -336,7 +340,7 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
       .close-btn svg {
         width: 18px;
         height: 18px;
-        color: #64748b;
+        color: var(--text-muted);
       }
       .modal-body {
         padding: 16px;
@@ -348,15 +352,17 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
         display: block;
         font-size: 12px;
         font-weight: 500;
-        color: #374151;
+        color: var(--text-color);
         margin-bottom: 6px;
       }
       .form-group input {
         width: 100%;
         padding: 10px 12px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--input-border);
         border-radius: 6px;
         font-size: 13px;
+        background: var(--input-bg);
+        color: var(--text-color);
       }
       .form-group input:focus {
         outline: none;
@@ -368,15 +374,16 @@ import { ReferenceService, RefItem } from '../../services/reference.service';
         gap: 8px;
         justify-content: flex-end;
         padding: 12px 16px;
-        border-top: 1px solid #e2e8f0;
+        border-top: 1px solid var(--border-color);
       }
       .btn-cancel {
         padding: 8px 16px;
-        border: 1px solid #e2e8f0;
-        background: white;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
         border-radius: 6px;
         font-size: 12px;
         cursor: pointer;
+        color: var(--text-color);
       }
       .btn-save {
         padding: 8px 16px;

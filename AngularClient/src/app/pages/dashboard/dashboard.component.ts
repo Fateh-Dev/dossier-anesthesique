@@ -190,7 +190,7 @@ import { CommonModule } from '@angular/common';
         }
       }
       .stat-card {
-        background: white;
+        background: var(--card-bg);
         border-radius: 8px;
         padding: 12px;
         display: flex;
@@ -230,11 +230,11 @@ import { CommonModule } from '@angular/common';
       .stat-value {
         font-size: 20px;
         font-weight: 700;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .stat-label {
         font-size: 11px;
-        color: #64748b;
+        color: var(--text-muted);
       }
       .content-grid {
         display: grid;
@@ -246,7 +246,7 @@ import { CommonModule } from '@angular/common';
         }
       }
       .card {
-        background: white;
+        background: var(--card-bg);
         border-radius: 8px;
         padding: 12px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -254,7 +254,7 @@ import { CommonModule } from '@angular/common';
       .card-title {
         font-size: 13px;
         font-weight: 600;
-        color: #0f172a;
+        color: var(--text-color);
         margin-bottom: 10px;
       }
       .actions-list {
@@ -267,17 +267,18 @@ import { CommonModule } from '@angular/common';
         align-items: center;
         gap: 8px;
         padding: 8px 10px;
-        border: 1px solid #e2e8f0;
-        background: white;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
         border-radius: 6px;
         font-size: 12px;
-        color: #374151;
+        color: var(--text-color);
         cursor: pointer;
         transition: all 0.15s ease;
       }
       .action-btn:hover {
         border-color: #0d9488;
         color: #0d9488;
+        background: var(--hover-bg);
       }
       .action-btn svg {
         width: 14px;
@@ -293,7 +294,7 @@ import { CommonModule } from '@angular/common';
         align-items: center;
         gap: 10px;
         padding: 8px;
-        background: #f8fafc;
+        background: var(--hover-bg);
         border-radius: 6px;
       }
       .item-avatar {
@@ -316,11 +317,11 @@ import { CommonModule } from '@angular/common';
       .item-name {
         font-size: 12px;
         font-weight: 500;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .item-detail {
         font-size: 11px;
-        color: #64748b;
+        color: var(--text-muted);
       }
       .item-status {
         font-size: 10px;

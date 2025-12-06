@@ -3,3 +3,78 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global Dark Mode Styles */
+:root {
+  --bg-color: #f1f5f9;
+  --text-color: #0f172a;
+  --card-bg: white;
+  --border-color: #e2e8f0;
+  --header-bg: #f8fafc;
+  --input-bg: white;
+  --input-border: #e2e8f0;
+  --table-border: #f1f5f9;
+  --text-muted: #64748b;
+  --hover-bg: #f1f5f9;
+}
+
+.dark {
+  --bg-color: #0f172a;
+  --text-color: #f1f5f9;
+  --card-bg: #1e293b;
+  --border-color: #334155;
+  --header-bg: #1e293b;
+  --input-bg: #1e293b;
+  --input-border: #334155;
+  --table-border: #334155;
+  --text-muted: #94a3b8;
+  --hover-bg: #334155;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Common Components Adaptation */
+/* Since components use View Encapsulation, these global styles might not reach inside unless we matches them with specificity or components are updated to use variables. */
+/* However, for standard HTML elements inside components, global CSS often applies if selectors match. */
+
+.page-header h1 {
+  color: var(--text-color);
+}
+
+.table-container {
+  background: var(--card-bg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+th {
+  background: var(--header-bg);
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+}
+
+td {
+  color: var(--text-color);
+  border-bottom: 1px solid var(--table-border);
+}
+
+.search-input,
+.filter-select {
+  background: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--input-border);
+}
+
+.btn-icon {
+  background: var(--hover-bg);
+}
+
+.btn-icon:hover {
+  background: var(--border-color);
+}
+
+.dark .btn-icon svg {
+  color: var(--text-muted);
+}

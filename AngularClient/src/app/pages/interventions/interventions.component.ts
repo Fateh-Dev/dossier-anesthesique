@@ -114,7 +114,7 @@ import { CommonModule } from '@angular/common';
       .page-header h1 {
         font-size: 18px;
         font-weight: 600;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .btn-primary {
         display: flex;
@@ -142,9 +142,11 @@ import { CommonModule } from '@angular/common';
       .search-input,
       .date-input {
         padding: 8px 12px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--input-border);
         border-radius: 6px;
         font-size: 12px;
+        background: var(--input-bg);
+        color: var(--text-color);
       }
       .search-input {
         flex: 1;
@@ -152,12 +154,14 @@ import { CommonModule } from '@angular/common';
       }
       .filter-select {
         padding: 8px 12px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--input-border);
         border-radius: 6px;
         font-size: 12px;
+        background: var(--input-bg);
+        color: var(--text-color);
       }
       .table-container {
-        background: white;
+        background: var(--card-bg);
         border-radius: 8px;
         overflow-x: auto;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -172,16 +176,16 @@ import { CommonModule } from '@angular/common';
         text-align: left;
         font-size: 11px;
         font-weight: 600;
-        color: #64748b;
-        background: #f8fafc;
-        border-bottom: 1px solid #e2e8f0;
+        color: var(--text-muted);
+        background: var(--header-bg);
+        border-bottom: 1px solid var(--border-color);
         white-space: nowrap;
       }
       td {
         padding: 10px 12px;
         font-size: 12px;
-        color: #374151;
-        border-bottom: 1px solid #f1f5f9;
+        color: var(--text-color);
+        border-bottom: 1px solid var(--table-border);
       }
       .status {
         padding: 3px 8px;
@@ -213,14 +217,17 @@ import { CommonModule } from '@angular/common';
       .btn-icon {
         padding: 4px;
         border: none;
-        background: #f1f5f9;
+        background: transparent;
         border-radius: 4px;
         cursor: pointer;
+      }
+      .btn-icon:hover {
+        background: var(--hover-bg);
       }
       .btn-icon svg {
         width: 14px;
         height: 14px;
-        color: #64748b;
+        color: var(--text-muted);
       }
     `,
   ],

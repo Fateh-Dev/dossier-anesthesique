@@ -102,7 +102,7 @@ import { CommonModule } from '@angular/common';
       .page-header h1 {
         font-size: 18px;
         font-weight: 600;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .period-selector {
         display: flex;
@@ -110,11 +110,12 @@ import { CommonModule } from '@angular/common';
       }
       .period-selector button {
         padding: 6px 12px;
-        border: 1px solid #e2e8f0;
-        background: white;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
         border-radius: 4px;
         font-size: 11px;
         cursor: pointer;
+        color: var(--text-color);
       }
       .period-selector button.active {
         background: #0d9488;
@@ -143,7 +144,7 @@ import { CommonModule } from '@angular/common';
         }
       }
       .stat-card {
-        background: white;
+        background: var(--card-bg);
         border-radius: 8px;
         padding: 12px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -154,12 +155,12 @@ import { CommonModule } from '@angular/common';
       .stat-title {
         font-size: 12px;
         font-weight: 600;
-        color: #64748b;
+        color: var(--text-muted);
       }
       .big-number {
         font-size: 28px;
         font-weight: 700;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .trend {
         font-size: 11px;
@@ -192,14 +193,14 @@ import { CommonModule } from '@angular/common';
       }
       .bar-label {
         font-size: 10px;
-        color: #64748b;
+        color: var(--text-muted);
         margin-top: 6px;
         text-align: center;
       }
       .bar-value {
         font-size: 11px;
         font-weight: 600;
-        color: #0f172a;
+        color: var(--text-color);
       }
       .asa-list {
         display: flex;
@@ -214,12 +215,12 @@ import { CommonModule } from '@angular/common';
       .asa-label {
         width: 50px;
         font-size: 11px;
-        color: #374151;
+        color: var(--text-color);
       }
       .asa-bar {
         flex: 1;
         height: 8px;
-        background: #f1f5f9;
+        background: var(--hover-bg);
         border-radius: 4px;
         overflow: hidden;
       }
@@ -230,7 +231,7 @@ import { CommonModule } from '@angular/common';
       .asa-value {
         width: 35px;
         font-size: 11px;
-        color: #64748b;
+        color: var(--text-muted);
         text-align: right;
       }
       .activity-list {
@@ -254,11 +255,11 @@ import { CommonModule } from '@angular/common';
       .activity-title {
         display: block;
         font-size: 12px;
-        color: #374151;
+        color: var(--text-color);
       }
       .activity-time {
         font-size: 10px;
-        color: #94a3b8;
+        color: var(--text-muted);
       }
     `,
   ],
