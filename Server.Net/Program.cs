@@ -61,7 +61,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         "AllowAngular",
-        policy => policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader()
+        policy => policy.WithOrigins("http://localhost:4201").AllowAnyMethod().AllowAnyHeader()
     );
 });
 
@@ -148,6 +148,9 @@ using (var scope = app.Services.CreateScope())
 
     // Seed Roles
     await DbSeeder.SeedRolesAndAdminAsync(services);
+    
+    // Seed Reference Data
+    await DbSeeder.SeedReferenceDataAsync(dbContext);
 
     Console.WriteLine("Database initialized and seeded successfully");
 }
