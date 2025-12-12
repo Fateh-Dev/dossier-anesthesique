@@ -10,6 +10,7 @@ import { ParametresComponent } from './pages/parametres/parametres.component';
 import { ProfilComponent } from './pages/profil/profil.component';
 import { MedecinsComponent } from './pages/medecins/medecins.component';
 import { authGuard } from './guards/auth.guard';
+import { TestPage } from './pages/test/test';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -20,6 +21,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: DashboardComponent },
       { path: 'patients', component: PatientsComponent },
+      { path: 'test', component: TestPage },
       { path: 'medecins', component: MedecinsComponent },
       { path: 'interventions', component: InterventionsComponent },
       { path: 'dossiers', component: DossiersComponent },

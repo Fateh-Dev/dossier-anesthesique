@@ -1,0 +1,25 @@
+<!-- main-form.component.html -->
+
+<app-import-excel (ready)="onImportReady()"></app-import-excel>
+
+<hr class="my-4" />
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <label>Nom</label>
+  <input formControlName="name" class="border p-1 w-full mb-2" />
+
+  <label>Email</label>
+  <input formControlName="email" class="border p-1 w-full mb-2" />
+
+  <label>Grade</label>
+  <select formControlName="grade" class="border p-1 w-full mb-2">
+    <option value="1">Active</option>
+    <option value="2">Pending</option>
+    <option value="3">Suspended</option>
+  </select>
+
+  <label>Téléphone</label>
+  <input formControlName="phone" class="border p-1 w-full mb-2" />
+
+  <button type="submit" class="bg-blue-600 text-white px-4 py-2 mt-3">Enregistrer</button>
+</form>
